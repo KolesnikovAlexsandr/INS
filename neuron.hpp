@@ -17,7 +17,10 @@ private:
     int NumberOfInput;
     double *WeightInput = new double[0];
     double Output = NULL;
+    double ActivationThreshold = 0;
     bool UseSigmoid = true;
+    bool UseActivationfunc = false;
+    double TrainingSpeed = 0.1;
     
     double SummFunc(double *MassOfSignal)
     {
@@ -26,10 +29,31 @@ private:
         {
             temp += MassOfSignal[i]*WeightInput[i];
         }
-        return 1/(1+exp(temp));
+        return temp;
     }
     
+    /*bool BackPropagation(double DesiredOutput , double *MassOfSignal)
+    {
+        double delta = 1;
+        int counter = 0;
+        while(getOutput() != DesiredOutput && delta > 0.000001 && counter < 1000)
+            {
+                SendSignal(MassOfSignal);
+                delta = Output*(1 - Output)*(DesiredOutput - Output);
+                for( int i = 0 ; i < NumberOfInput ; i++)
+                {
+                    WeightInput[i] +=TrainingSpeed*delta*Output;
+                }
+                counter++;
+            }
+        return true;
+    }*/
 public:
+    neuron()
+    {
+        this->NumberOfInput = 0;
+        this->WeightInput = 0;
+    }
     
     neuron(int NumberOfInput , double *MassOfWeightInput)
     {
@@ -43,8 +67,27 @@ public:
     
     void SendSignal(double *MassOfSignal)
     {
-        Output = SummFunc(MassOfSignal);
+        if(UseSigmoid)
+        {
+            Output = 1/(1+exp(SummFunc(MassOfSignal)));
+        }
+        else if(UseActivationfunc)
+        {
+            if( SummFunc(MassOfSignal) > ActivationThreshold)
+            {
+                Output = 1;
+            }
+            else
+            {
+                Output = 0;
+            }
+        }
+        else
+        {
+            Output = SummFunc(MassOfSignal);
+        }
     }
+    
     
     void PrintIfo()
     {
@@ -63,6 +106,21 @@ public:
         {
             this->WeightInput[i] = MassOfWeightInput[i];
         }
+    }
+    
+    void setActivationThreshold(double ActivationThreshold)
+    {
+        this->ActivationThreshold = ActivationThreshold;
+    }
+    void setModeSigmoid()
+    {
+        this->UseSigmoid = true;
+        this->UseActivationfunc = false;
+    }
+    void setModePerceptron()
+    {
+        this->UseSigmoid = false;
+        this->UseActivationfunc = true;
     }
     double getOutput()
     {

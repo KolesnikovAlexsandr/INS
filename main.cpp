@@ -13,13 +13,13 @@
 int main(int argc, const char * argv[]) {
     double *weight = new double[2];
     double *Signal = new double[2];
-    weight[0] = 1;
-    weight[1] = 0.5;
+    std::cout<<"Start"<<std::endl;
+    weight[0] = 0.1;
+    weight[1] = 0.2;
     Signal[0] = 1;
     Signal[1] = 0;
-    neuron A(2,weight);
-    A.SendSignal(Signal);
-    //A.PrintIfo();
-    std::cout<<A.getOutput()<<std::endl;
+
+    
+    //std::cout<<A.getOutput()<<std::endl;
     return 0;
 }
