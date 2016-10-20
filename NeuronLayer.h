@@ -14,28 +14,31 @@
 #include <math.h>
 #include "neuron.hpp"
 #include <ctime>
-#include <vector>
+#include <list>
 
 class NeuronLayer {
     
     private:
+    
         int NumberOfNeuron;
         int NumberOfInputEachNeuron;
         double *WeightInputOfEachNeuron = new double[0];
-        std::vector<neuron> Layer;
+        std::list<neuron> Layer;
     
     public:
+    
         NeuronLayer()
         {
             this->NumberOfNeuron = 0;
             this->NumberOfInputEachNeuron = 0;
         }
+    
         NeuronLayer(int NumberOfNeuron , int NumberOfInputEachNeuron)
         {
             srand(time(0));
             this->NumberOfNeuron = NumberOfNeuron;
             this->NumberOfInputEachNeuron = NumberOfInputEachNeuron;
-            this->Layer.reserve(NumberOfNeuron);
+            this->Layer.resize(0);
             this->WeightInputOfEachNeuron = new double [ NumberOfNeuron * NumberOfInputEachNeuron ];
             for(int i = 0 ; i< NumberOfNeuron ; i++)
             {
@@ -51,7 +54,7 @@ class NeuronLayer {
                 {
                     temp[j] = WeightInputOfEachNeuron[ i * NumberOfNeuron + j ];
                 }
-
+                this->Layer.push_back(neuron( NumberOfInputEachNeuron ,temp));
             }
         }
             
@@ -59,16 +62,49 @@ class NeuronLayer {
         {
             std::cout<<"Number of neuron:"<<NumberOfNeuron<<std::endl;
             std::cout<<"Number of Input Each Neuron:"<<NumberOfInputEachNeuron<<std::endl;
-            std::cout<<"Weight of input:";
+            auto neuron = Layer.begin();
             for(int i = 0 ; i< NumberOfNeuron ; i++)
             {
                 std::cout<<"Neuron Number "<<i<<std::endl;
+                std::advance(neuron, i);
+                neuron->PrintIfo();
+            }
+                
+        }
+    
+        void setWeightInputOfEachNeuron(double *weight)
+        {
+            for(int i = 0 ; i < NumberOfNeuron ; i++)
+            {
                 for(int j = 0 ; j < NumberOfInputEachNeuron ; j++)
                 {
-                    std::cout<<"Weight of Input"<<WeightInputOfEachNeuron[i*NumberOfNeuron+j] << " ";
+                    this->WeightInputOfEachNeuron[ i * NumberOfNeuron + j ] = weight[i * NumberOfNeuron + j];
                 }
-                std::cout<<std::endl;
+            }
+            
+            double *temp = new double[NumberOfInputEachNeuron];
+            auto neuron = Layer.begin();
+            for( int i = 0 ; i < NumberOfNeuron ; i++ )
+            {
+                for( int j = 0 ; j < NumberOfInputEachNeuron ; j++ )
+                {
+                    temp[ j ] = WeightInputOfEachNeuron[ i * NumberOfNeuron + j ];
+                }
+                std::advance(neuron, i);
+                neuron->setWeightOfInput(temp);
+            }
         }
-    }
+    
+        void getReaction(double *Result_mass , double *Signal)
+        {
+            auto neuron = Layer.begin();
+            for(int i = 0 ; i < NumberOfNeuron ; i++)
+            {
+                std::advance(neuron, i);
+                neuron->SendSignal(Signal);
+                Result_mass[i]  = neuron->getOutput();
+            }
+        }
 };
+
 #endif /* NeuronLayer_h */
