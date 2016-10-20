@@ -14,6 +14,7 @@
 #include <math.h>
 #include "neuron.hpp"
 #include <ctime>
+#include <vector>
 
 class NeuronLayer {
     
@@ -21,7 +22,7 @@ class NeuronLayer {
         int NumberOfNeuron;
         int NumberOfInputEachNeuron;
         double *WeightInputOfEachNeuron = new double[0];
-        neuron *Layer;
+        std::vector<neuron> Layer;
     
     public:
         NeuronLayer()
@@ -34,7 +35,7 @@ class NeuronLayer {
             srand(time(0));
             this->NumberOfNeuron = NumberOfNeuron;
             this->NumberOfInputEachNeuron = NumberOfInputEachNeuron;
-            this->Layer = new neuron[NumberOfNeuron];
+            this->Layer.reserve(NumberOfNeuron);
             this->WeightInputOfEachNeuron = new double [ NumberOfNeuron * NumberOfInputEachNeuron ];
             for(int i = 0 ; i< NumberOfNeuron ; i++)
             {
@@ -43,14 +44,14 @@ class NeuronLayer {
                     this->WeightInputOfEachNeuron[ i * NumberOfNeuron + j ] = 0.1;
                 }
             }
-            double temp = *new double[NumberOfInputEachNeuron];
+            double *temp = new double[NumberOfInputEachNeuron];
             for(int i = 0 ; i < NumberOfNeuron ; i++)
             {
                 for(int j = 0 ; j < NumberOfInputEachNeuron ; j++)
                 {
                     temp[j] = WeightInputOfEachNeuron[ i * NumberOfNeuron + j ];
                 }
-                this->Layer[i](NumberOfInputEachNeuron, temp);
+
             }
         }
             

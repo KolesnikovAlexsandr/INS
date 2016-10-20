@@ -22,6 +22,7 @@ private:
     bool UseActivationfunc = false;
     double TrainingSpeed = 0.1;
     
+    
     double SummFunc(double *MassOfSignal)
     {
         double temp = 0;
@@ -65,6 +66,15 @@ public:
         }
     }
     
+    int getNumberOfInput()
+    {
+        return this->NumberOfInput;
+    }
+    
+    double getWeightInput()
+    {
+        return *this->WeightInput;
+    }
     void SendSignal(double *MassOfSignal)
     {
         if(UseSigmoid)
@@ -107,6 +117,7 @@ public:
             this->WeightInput[i] = MassOfWeightInput[i];
         }
     }
+    
     
     void setActivationThreshold(double ActivationThreshold)
     {
