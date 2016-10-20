@@ -44,7 +44,7 @@ class NeuronLayer {
             {
                 for(int j = 0 ; j < NumberOfInputEachNeuron ; j++)
                 {
-                    this->WeightInputOfEachNeuron[ i * NumberOfNeuron + j ] = 0.1;
+                    this->WeightInputOfEachNeuron[ i * NumberOfNeuron + j ] = rand()%10;
                 }
             }
             double *temp = new double[NumberOfInputEachNeuron];
@@ -94,6 +94,8 @@ class NeuronLayer {
                 neuron->setWeightOfInput(temp);
             }
         }
+    
+    
     
         void getReaction(double *Result_mass , double *Signal)
         {
