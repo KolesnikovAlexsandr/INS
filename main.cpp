@@ -7,7 +7,6 @@
 //
 
 #include <iostream>
-#include "neuron.hpp"
 #include "NeuronLayer.h"
 
 int main(int argc, const char * argv[]) {
@@ -18,7 +17,7 @@ int main(int argc, const char * argv[]) {
     Signal[1] = 0.2;
     NeuronLayer A(2,2);
     A.PrintIfo();
-    A.getReaction(Reaction, Signal );
+    A.getReactionOfLayer(Reaction, Signal );
     for(int  i= 0 ; i < 2 ; i++)
     {
         std::cout<<Reaction[i]<<" ";

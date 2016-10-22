@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
-class neuron {
+class Neuron {
 private:
     int NumberOfInput;
     double *WeightInput = new double[0];
@@ -50,13 +50,13 @@ private:
         return true;
     }*/
 public:
-    neuron()
+    Neuron()
     {
         this->NumberOfInput = 0;
         this->WeightInput = 0;
     }
     
-    neuron(int NumberOfInput , double *MassOfWeightInput)
+    Neuron(int NumberOfInput , double *MassOfWeightInput)
     {
         this->NumberOfInput = NumberOfInput;
         this->WeightInput = new double[NumberOfInput];
